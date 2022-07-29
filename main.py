@@ -13,13 +13,14 @@ from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from sklearn.model_selection import train_test_split
 from keras.preprocessing.image import ImageDataGenerator
-directory = "../input/face-mask-detection-dataset/Medical mask/Medical mask/Medical Mask/annotations"
-image_directory = "../input/face-mask-detection-dataset/Medical mask/Medical mask/Medical Mask/images"
-df = pd.read_csv("../input/face-mask-detection-dataset/train.csv")
-df_test = pd.read_csv("../input/face-mask-detection-dataset/submission.csv")
+directory = "Medical mask/Medical mask/Medical Mask/annotations"
+image_directory = "Medical mask/Medical mask/Medical Mask/images"
+df = pd.read_csv("train.csv")
+df_test = pd.read_csv("submission.csv")
 
 
-cvNet = cv2.dnn.readNetFromCaffe('weights.caffemodel')
+cvNet = cv2.dnn.readNetFromCaffe("deploy.prototxt", "weights.caffemodel")
+
 def getJSON(filePathandName):
     with open(filePathandName,'r') as f:
         return json.load(f)
@@ -104,6 +105,18 @@ height_shift_range=0.1,
 horizontal_flip=True,  
 vertical_flip=False
 
+datagen = ImageDataGenerator(
+        featurewise_center=False,  
+        samplewise_center=False,  
+        featurewise_std_normalization=False,  
+        samplewise_std_normalization=False,  
+        zca_whitening=False,    
+        rotation_range=15,    
+        width_shift_range=0.1,
+        height_shift_range=0.1,  
+        horizontal_flip=True,  
+        vertical_flip=False)
+
 datagen.fit(xtrain)
 
 history = model.fit_generator(datagen.flow(xtrain, ytrain, batch_size=32),
@@ -112,6 +125,7 @@ history = model.fit_generator(datagen.flow(xtrain, ytrain, batch_size=32),
                     verbose=1,
                     validation_data=(xval, yval))
 
+model.save('model-net.h5')
 
 test_images = ['1114.png','1504.jpg', '0072.jpg','0012.jpg','0353.jpg','1374.jpg']
 
