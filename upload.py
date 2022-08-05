@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 from tkinter.filedialog import askopenfile
 import time
+import test
 
 # Refs
 # https://pythonguides.com/upload-a-file-in-python-tkinter/
@@ -9,10 +10,13 @@ import time
 ws = Tk()
 ws.title('Face Mask Detector')
 ws.geometry('600x200')
-
+imagePaths = []
 
 def open_file():
     file_path = askopenfile(mode='r', filetypes=[('Image Files', '*jpg')])
+    imagePaths.insert(0, file_path.name)
+    if len(imagePaths) > 1:
+        imagePaths.pop()
     if file_path is not None:
         pass
 
@@ -35,6 +39,7 @@ def uploadFiles():
         text='Picture Uploaded Successfully!',
         foreground='green'
     ).grid(row=4,columnspan=3, pady=10)
+    test.checkForMask(imagePaths)
 
 
 adhar = Label(
@@ -63,5 +68,5 @@ checkBtn = Button(
 )
 checkBtn.grid(row=1, column=1)
 
-def startGUI():
-    ws.mainloop()
+
+ws.mainloop()
