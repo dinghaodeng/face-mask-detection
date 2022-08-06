@@ -5,3 +5,7 @@ https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-e
 
 Run: pip install -r requirements.txt
 To install all the python modules
+
+Refs:
+https://thecleverprogrammer.com/2020/11/17/face-mask-detection-with-machine-learning/
+https://pythonguides.com/upload-a-file-in-python-tkinter/
